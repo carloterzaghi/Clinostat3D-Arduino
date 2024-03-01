@@ -4,7 +4,7 @@
 // Create a new servo object:
 Servo myservo;
 
-// Define the servo pin:
+// Definindo todas as funções, sendo servo até dado recebido via Serial pelo Esp32
 #define servoPin 9
 const int ledPin = 8;
 const int buttonPin = 7;
@@ -23,16 +23,19 @@ void setup() {
 }
 
 void loop() {
-  ReciveDataSerial = Serial.readString();
+  ReciveDataSerial = Serial.readString(); // Faz a leitura das informações enviadas pelo Esp32 ao Arduino via Serial
   if (ReciveDataSerial!="") {
     String nova_str = ReciveDataSerial.substring(0, ReciveDataSerial.length() - 2);
     String estadoLigar, Gravidade;
     int pos = nova_str.indexOf(",");
-    
+
+    // Se tiver virgula separa os dados pela posição
     if (pos != -1) {
       estadoLigar = nova_str.substring(0, pos); 
       Gravidade = nova_str.substring(pos + 1); 
     }
+
+    // Se não tiver virgula é porque é um dado sozinho, como o "off" para desligar o led
     else{
       estadoLigar = nova_str;
     }
@@ -43,15 +46,15 @@ void loop() {
     if (estadoLigar == "on"){
       digitalWrite(ledPin, HIGH);
     } 
-
+    
     if (Gravidade != ""){
       myservo.write(atoi(Gravidade.c_str()));
     } 
 
   }
-
+  
   buttonState = digitalRead(buttonPin);
-
+  
   Serial.println(String(buttonState)+","+String(random(100))); // Send data to esp32 -> buttonState, RandomNumber
 
   delay(300);
