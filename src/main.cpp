@@ -10,6 +10,7 @@ const int ledPin = 8;
 const int buttonPin = 7;
 int buttonState = 0;
 String ReciveDataSerial = "";
+String estadoLigar, Gravidade;
 
 void setup() {
   Serial.begin(9600);
@@ -26,7 +27,6 @@ void loop() {
   ReciveDataSerial = Serial.readString(); // Faz a leitura das informações enviadas pelo Esp32 ao Arduino via Serial
   if (ReciveDataSerial!="") {
     String nova_str = ReciveDataSerial.substring(0, ReciveDataSerial.length() - 2);
-    String estadoLigar, Gravidade;
     int pos = nova_str.indexOf(",");
 
     // Se tiver virgula separa os dados pela posição
@@ -54,8 +54,11 @@ void loop() {
   }
   
   buttonState = digitalRead(buttonPin);
-  
-  Serial.println(String(buttonState)+","+String(random(100))); // Send data to esp32 -> buttonState, RandomNumber
+
+  // Se for para ligar o led, envie dados para o ESP32
+  if (estadoLigar == "on"){
+    Serial.println(String(buttonState)+","+String(random(100))); // Send data to esp32 -> buttonState, RandomNumber
+  }
 
   delay(300);
 }
