@@ -12,3 +12,6 @@ If you want the see the Esp32 part click here: [Clinostat3D-Esp32](https://githu
 
 # How it should be assembled
 ![Alt text](https://github.com/carloterzaghi/Clinostat3D-Esp32/blob/main/image2.png)
+
+# PCB Exemple
+![Alt text](https://github.com/carloterzaghi/Clinostat3D-Esp32/blob/main/PCB_Clinostat3D.png)
