@@ -69,7 +69,6 @@ void loop() {
     while (RS485Serial.available())
     {
       char inChar = (char)RS485Serial.read();
-      
       if (inChar != '\0') 
       {
         ReciveDataSerial += inChar;
@@ -78,22 +77,28 @@ void loop() {
       if (inChar == '\n')
       {
         //Mostra no Serial Monitor a string recebida
-        Serial.print(ReciveDataSerial);
+        Serial.println(ReciveDataSerial);
         
         String nova_str = ReciveDataSerial.substring(0, ReciveDataSerial.length() - 2);
         String estadoLigar, whereIsSend;
 
         Gravidade = "";
-        int pos = nova_str.indexOf(",");
+        int firstComma = nova_str.indexOf(',');
+        int secondComma = nova_str.indexOf(',', firstComma + 1);
 
         // Se tiver virgula separa os dados pela posição
-        whereIsSend = nova_str.substring(0, pos); 
-        estadoLigar = nova_str.substring(pos + 1); 
-
+        whereIsSend = nova_str.substring(0, firstComma); 
+        
         // Se não tiver virgula é porque é um dado sozinho, como o "off" para desligar o led
-        if (pos != 1) {
-          Gravidade = nova_str.substring(pos + 2); 
+        if (secondComma != -1) {
+          Gravidade = nova_str.substring(secondComma+1); 
+          estadoLigar = nova_str.substring(firstComma+1,secondComma); 
         }
+        else estadoLigar = nova_str.substring(firstComma+1); 
+
+        Serial.println(whereIsSend);
+        Serial.println(estadoLigar);
+        Serial.println(Gravidade);
 
         if (whereIsSend == "ESP-Master"){
           if (estadoLigar == "off"){
@@ -103,6 +108,7 @@ void loop() {
           if (estadoLigar == "on"){
             digitalWrite(MotorEnable, MotorLigar);  // Liga o motor
             digitalWrite(ledPin, HIGH);
+            delay(200);  // Aguarda um pouco para estabilizar
           }
         }
          
@@ -112,7 +118,7 @@ void loop() {
   }
 
   if (Gravidade != ""){
-    stepper.setSpeed(RPM_to_PPS(atoi(Gravidade.c_str()))); // Coloca a velocidade imposta pelo usuário
+    stepper.setSpeed(atoi(Gravidade.c_str())); // Coloca a velocidade imposta pelo usuário
     stepper.runSpeed(); // Inicia o funcionamento
   } 
 
