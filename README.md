@@ -13,7 +13,7 @@ If you want the see the <strong>Arduino Nano 2</strong> part click here: [Clinos
 <br><br>
 
 # How it should be assembled
-![Alt text](https://github.com/carloterzaghi/Clinostat3D-Esp32/blob/main/image2.png)
+![Alt text](https://github.com/carloterzaghi/Clinostat3D-Arduino/blob/main/ArduinoNano_1_PCB.png)
 
 # PCB Exemple
-![Alt text](https://github.com/carloterzaghi/Clinostat3D-Esp32/blob/main/PCB_Clinostat3D.png)
+![Alt text](https://github.com/carloterzaghi/Clinostat3D-Arduino/blob/main/Arduino_Nano1.png)
